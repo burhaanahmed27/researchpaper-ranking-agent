@@ -56,16 +56,25 @@ print(
     f"{len(state.unique_papers)} unique papers passed relevance filtering."
 )
 
+# Making sure at least 5 papers proceed to ranking (Requirement)
+if len(state.relevant_papers) >= 5:
+    papers_to_rank = state.relevant_papers
+else:
+    papers_to_rank = state.unique_papers
+    print(
+        "\nFewer than 5 papers passed relevance filtering, so all unique papers will be considered for final ranking."
+    )
+
 # Decision 3 - Final Ranking
 print("\n--- FINAL RANKING ---")
 
 state.ranking_assessments = score_papers(
     state.research_question,
-    state.relevant_papers
+    papers_to_rank
 )
 
 state.ranked_papers = rank_papers(
-    state.relevant_papers,
+    papers_to_rank,
     state.ranking_assessments
 )
 
